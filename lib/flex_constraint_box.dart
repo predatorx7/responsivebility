@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const flexDefaultConstraint = BoxConstraints(maxWidth: 800);
+const flexDefaultConstraint = BoxConstraints(maxWidth: 600);
 
 class FlexConstraintBox extends StatelessWidget {
   final Axis direction;

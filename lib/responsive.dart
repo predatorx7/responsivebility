@@ -18,6 +18,33 @@ class ResponsiveRange {
 
   final Map<double, double> valueByRange;
 
+  double computeResponsiveSizeFrom(
+    double size,
+  ) {
+    assert(valueByRange.isNotEmpty, 'valueByRange must not be empty');
+
+    final values = SplayTreeMap<double, double>.from(valueByRange);
+    final ranges = values.keys;
+    double begin = ranges.first;
+    double end = ranges.last;
+
+    for (final range in ranges) {
+      if (size >= range) {
+        begin = math.min(begin, range);
+      }
+      if (size <= range) {
+        end = math.max(end, range);
+      }
+    }
+
+    return Tween(
+      begin: values[begin]!,
+      end: values[end]!,
+    ).transform(
+      _getExtrapolationFactor(begin, end, size),
+    );
+  }
+
   @override
   bool operator ==(Object other) {
     return other is ResponsiveRange &&
@@ -33,34 +60,4 @@ class ResponsiveRange {
 
 double _getExtrapolationFactor(num a, num b, double x) {
   return (x.clamp(a, b) - a) / (b - a);
-}
-
-double computeResponsiveSizeFrom(
-  double currentSize,
-  ResponsiveRange range,
-) {
-  final valueByRange = range.valueByRange;
-
-  assert(valueByRange.isNotEmpty, 'valueByRange must not be empty');
-
-  final values = SplayTreeMap<double, double>.from(valueByRange);
-  final ranges = values.keys;
-  double begin = ranges.first;
-  double end = ranges.last;
-
-  for (final range in ranges) {
-    if (currentSize >= range) {
-      begin = math.min(begin, range);
-    }
-    if (currentSize <= range) {
-      end = math.max(end, range);
-    }
-  }
-
-  return Tween(
-    begin: values[begin]!,
-    end: values[end]!,
-  ).transform(
-    _getExtrapolationFactor(begin, end, currentSize),
-  );
 }
