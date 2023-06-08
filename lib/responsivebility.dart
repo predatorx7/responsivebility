@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'responsive.dart';
 
 export 'breakpoint/breakpoint.dart';
+export 'breakpoint_fitted_box.dart';
 export 'responsive.dart';
 export 'flex_constraint_box.dart';
 

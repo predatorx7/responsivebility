@@ -1,6 +1,6 @@
 name: responsivebility
 description: Simple utilities for widgets for making responsive layouts in flutter
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/predatorx7/responsivebility
 
 environment:
