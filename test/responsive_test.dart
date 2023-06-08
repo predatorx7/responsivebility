@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:widget_layout/widget_layout.dart';
+import 'package:responsivebility/responsivebility.dart';
 
 void main() {
   group('ResponsiveRange', () {

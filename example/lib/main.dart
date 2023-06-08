@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:responsivebility/responsivebility.dart';
 
 void main() {
   runApp(const MyApp());
@@ -39,9 +40,57 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final responsive = Responsivebility.of(
+      context,
+      range: ResponsiveRange({
+        360: 24,
+        500: 48,
+        800: 65,
+      }),
+      breakpointSize: (size, visualDensity) {
+        return size.width;
+      },
+    );
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        toolbarHeight: responsive.size(
+          range: ResponsiveRange({
+            360: kToolbarHeight,
+            800: 100,
+          }),
+        ),
+        leading: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FlutterLogo(
+              // This will return a value between 24 and 48.
+              // It'll have a value that is linear interpolated between 360 and 800
+              // depending upon the screen's shortest width (by default).
+              size: responsive.size(
+                range: ResponsiveRange({
+                  360: 24,
+                  500: 48,
+                }),
+              ),
+              // Change properties based on conditions
+              style: responsive.valueOf<FlutterLogoStyle>(
+                when: (size) {
+                  if (size > 80) return FlutterLogoStyle.horizontal;
+                  if (size > kToolbarHeight) return FlutterLogoStyle.stacked;
+                  return FlutterLogoStyle.markOnly;
+                },
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ActionButton(responsive: responsive),
+          ),
+        ],
         title: Text(widget.title),
       ),
       body: Center(
@@ -63,6 +112,49 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class ActionButton extends StatelessWidget {
+  const ActionButton({
+    super.key,
+    required this.responsive,
+  });
+
+  final Responsivebility responsive;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          // This will return a value between 24 and 48.
+          // It'll have a value that is linear interpolated between 360 and 800
+          // depending upon the screen's shortest width (by default).
+          height: responsive.size(
+            range: ResponsiveRange({
+              360: 24,
+              500: 48,
+            }),
+          ),
+          width: responsive.size(
+            range: ResponsiveRange({
+              360: 24,
+              500: 48,
+            }),
+          ),
+          // Change properties based on conditions
+          color: responsive.valueOf<Color>(
+            when: (size) {
+              if (size > 80) return Colors.red;
+              if (size > kToolbarHeight) return Colors.orange;
+              return Colors.blue;
+            },
+          ),
+        ),
+      ],
     );
   }
 }

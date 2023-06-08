@@ -16,13 +16,13 @@ class ResponsiveRange {
           (key, value) => MapEntry(key.value, value),
         );
 
+  const ResponsiveRange.empty() : valueByRange = const {};
+
   final Map<double, double> valueByRange;
 
   double computeResponsiveSizeFrom(
     double size,
   ) {
-    assert(valueByRange.isNotEmpty, 'valueByRange must not be empty');
-
     final values = SplayTreeMap<double, double>.from(valueByRange);
     final ranges = values.keys;
     double begin = ranges.first;
